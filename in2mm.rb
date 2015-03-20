@@ -29,15 +29,15 @@ class In2mm < Sinatra::Base
 
   get %r{/([0-9]*\.?[0-9]+)-inches-in-mm\.(html|json)} do
     @inches     = params[:captures][0]
-    @milimeters = "%0.4f" % [@inches.to_f * @formula]
+    @millimeters = "%0.4f" % [@inches.to_f * @formula]
     case params[:captures][1]
     when "html"
       content_type "text/html", charset: "utf-8"
-      @title  = "#{@inches} inches = #{@milimeters} milimeters."
+      @title  = "#{@inches} inches = #{@millimeters} millimeters."
       erb :transform
     when "json"
       content_type "application/json", charset: "utf-8"
-      JSON.dump({inches: @inches, milimeters: @milimeters})
+      JSON.dump({inches: @inches, millimeters: @millimeters})
     end
   end
 
@@ -89,7 +89,7 @@ __END__
       if(inches === void 0) { return; }
 
       var result = (Math.round(parseFloat(inches * 25.4) * 10000) / 10000).toFixed(4);
-      var title = inches + " inches = " + result + " milimeters.";
+      var title = inches + " inches = " + result + " millimeters.";
 
       $('h3').html(title);
       $('input#mm').val(result);
@@ -114,7 +114,7 @@ __END__
   <form><input id=inch size=6><label for=inch>inches</label> = <input id=mm disabled size=9><label for=mm>mm</label></form>
 
 @@ chart
-  <table><tr><th colspan=2>inches<th>metric<th colspan=2>inches<th>metric<th colspan=2>inches<th>metric</tr><tr><td>fractional<td>decimal<td>mm<td>fractional<td>decimal<td>mm<td>fractional<td>decimal<td>mm</tr><% for i in 0..@factor %><tr><% for k in 0..2 %><% current = i + (@factor * k) + k %><td><%= Data.rows[current][:fractional].gsub('xxxx','&middot;') %><td><a href="/<%= Data.rows[current][:decimal]%>-inches-in-mm.html" title="<%= Data.rows[current][:decimal]%> inches in milimeters"><%= Data.rows[current][:decimal] %></a><td><%= "%0.4f" % (Data.rows[current][:decimal] * @formula) %><% end %></tr><% end %></table>
+  <table><tr><th colspan=2>inches<th>metric<th colspan=2>inches<th>metric<th colspan=2>inches<th>metric</tr><tr><td>fractional<td>decimal<td>mm<td>fractional<td>decimal<td>mm<td>fractional<td>decimal<td>mm</tr><% for i in 0..@factor %><tr><% for k in 0..2 %><% current = i + (@factor * k) + k %><td><%= Data.rows[current][:fractional].gsub('xxxx','&middot;') %><td><a href="/<%= Data.rows[current][:decimal]%>-inches-in-mm.html" title="<%= Data.rows[current][:decimal]%> inches in millimeters"><%= Data.rows[current][:decimal] %></a><td><%= "%0.4f" % (Data.rows[current][:decimal] * @formula) %><% end %></tr><% end %></table>
 
 @@ footer
   <footer>
