@@ -84,7 +84,8 @@ __END__
 <script>
   $(function() {
     $('input#inch').keyup(function() {
-      var inches = eval($(this).val().replace(' ', '+'));
+      try { var inches = eval($(this).val().replace(' ', '+'));
+      } catch (e) { return; }
       if(inches === void 0) { return; }
 
       var result = (Math.round(parseFloat(inches * 25.4) * 10000) / 10000).toFixed(4);
